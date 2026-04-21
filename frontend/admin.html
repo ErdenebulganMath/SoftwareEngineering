@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ удирдлага | Learning System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="page-blob page-blob-1"></div>
+    <div class="page-blob page-blob-2"></div>
+    <div class="page-blob page-blob-3"></div>
+    <div class="page-shape page-ring-1"></div>
+    <div class="page-shape page-ring-2"></div>
+    <div class="page-shape page-ring-3"></div>
+    <div class="page-shape page-diamond"></div>
+    <div class="page-shape page-square"></div>
+    <div class="page-shape page-triangle"></div>
+    <div class="page-shape page-streak-1"></div>
+    <div class="page-shape page-streak-2"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" href="#">
+                <div class="navbar-icon-box">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <span>LEARNING SYSTEM <span class="text-white-50 fw-normal">/ Админ</span></span>
+            </a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2 text-white-50 small">
+                    <i class="bi bi-person-circle fs-5 text-white"></i>
+                    <span>Нэвтэрсэн: <strong class="text-white">admin</strong></span>
+                </div>
+                <a href="index.html" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-eye me-1"></i>Нүүр хуудас
+                </a>
+                <button class="btn btn-danger btn-sm" onclick="logout()">
+                    <i class="bi bi-box-arrow-right me-1"></i>Гарах
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4 py-4">
+
+        <!-- Stats Row -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body d-flex align-items-center gap-3 py-3">
+                        <div class="stat-icon stat-icon-blue">
+                            <i class="bi bi-collection-fill"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted stat-label">Нийт хичээл</div>
+                            <div class="fs-4 fw-bold text-dark" id="stat-total">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body d-flex align-items-center gap-3 py-3">
+                        <div class="stat-icon stat-icon-teal">
+                            <i class="bi bi-cash-coin"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted stat-label">Дундаж үнэ</div>
+                            <div class="fs-5 fw-bold text-dark" id="stat-avg">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body d-flex align-items-center gap-3 py-3">
+                        <div class="stat-icon stat-icon-amber">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted stat-label">Хамгийн өндөр</div>
+                            <div class="fs-5 fw-bold text-dark" id="stat-max">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body d-flex align-items-center gap-3 py-3">
+                        <div class="stat-icon stat-icon-indigo">
+                            <i class="bi bi-graph-down-arrow"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted stat-label">Хамгийн бага</div>
+                            <div class="fs-5 fw-bold text-dark" id="stat-min">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Form: Add / Edit -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm form-card">
+                    <div class="card-header bg-white border-bottom py-3 px-4">
+                        <h5 class="mb-0 fw-bold" id="formTitle">
+                            <i class="bi bi-plus-circle me-2 text-primary"></i>Шинэ хичээл нэмэх
+                        </h5>
+                    </div>
+                    <div class="card-body px-4 py-3">
+                        <input type="hidden" id="courseId">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Гарчиг <span class="text-danger">*</span></label>
+                            <input type="text" id="title" class="form-control" placeholder="Хичээлийн нэр оруулна уу" maxlength="255">
+                            <div class="invalid-feedback">Гарчиг оруулна уу.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Тайлбар <span class="text-danger">*</span></label>
+                            <textarea id="desc" class="form-control" rows="4" placeholder="Хичээлийн тухай товч тайлбар бичнэ үү"></textarea>
+                            <div class="invalid-feedback">Тайлбар оруулна уу.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Үнэ (₮) <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text fw-semibold">₮</span>
+                                <input type="number" id="price" class="form-control" placeholder="0" min="0" step="100">
+                            </div>
+                            <div class="form-text text-muted">Жишээ: 49900</div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary fw-semibold" onclick="saveCourse()">
+                                <i class="bi bi-floppy me-1"></i>Хадгалах
+                            </button>
+                            <button id="cancelBtn" class="btn btn-outline-secondary d-none" onclick="resetForm()">
+                                <i class="bi bi-x-circle me-1"></i>Цуцлах
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table: Course List -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm table-card">
+                    <div class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="bi bi-table me-2 text-primary"></i>Хичээлүүдийн жагсаалт
+                        </h5>
+                        <div class="input-group" style="max-width:260px;">
+                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                            <input type="text" id="searchInput" class="form-control border-start-0 border-end-0 ps-0"
+                                   placeholder="Хайх..." oninput="filterTable()">
+                            <span class="input-group-text bg-white border-start-0 search-clear"
+                                  onclick="clearAdminSearch()" title="Цэвэрлэх">
+                                <i class="bi bi-x-lg" style="font-size:.75rem;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4" style="width:48px;">#</th>
+                                        <th style="min-width:160px;">Гарчиг</th>
+                                        <th style="min-width:180px;">Тайлбар</th>
+                                        <th style="width:120px;">Үнэ</th>
+                                        <th class="text-end pe-4" style="width:160px;">Үйлдэл</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-course-list">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-muted">
+                                            <div class="spinner-border spinner-border-sm me-2 text-primary" role="status"></div>
+                                            Ачааллаж байна...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top py-2 px-4 text-muted small d-flex justify-content-between align-items-center">
+                        <span>Нийт: <strong id="table-count">—</strong> хичээл</span>
+                        <span class="text-muted" id="table-filter-note"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pb-0">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="delete-icon-box">
+                            <i class="bi bi-trash3-fill text-danger fs-5"></i>
+                        </div>
+                        <h5 class="modal-title fw-bold mb-0">Устгах уу?</h5>
+                    </div>
+                </div>
+                <div class="modal-body pt-2">
+                    <p class="mb-1 text-muted small"><strong class="text-dark" id="deleteCourseName"></strong> хичээлийг устгахдаа итгэлтэй байна уу?</p>
+                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-circle me-1"></i>Энэ үйлдлийг буцааж болохгүй.</p>
+                </div>
+                <div class="modal-footer border-0 pt-0 gap-2">
+                    <button class="btn btn-light btn-sm flex-fill" data-bs-dismiss="modal">Цуцлах</button>
+                    <button class="btn btn-danger btn-sm flex-fill fw-semibold" id="confirmDeleteBtn">
+                        <i class="bi bi-trash me-1"></i>Устгах
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastMsg" class="toast align-items-center border-0 rounded-3" role="alert">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold" id="toastText"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

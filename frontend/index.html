@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сургалтын систем | Нүүр хуудас</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="page-blob page-blob-1"></div>
+    <div class="page-blob page-blob-2"></div>
+    <div class="page-blob page-blob-3"></div>
+    <div class="page-shape page-ring-1"></div>
+    <div class="page-shape page-ring-2"></div>
+    <div class="page-shape page-ring-3"></div>
+    <div class="page-shape page-diamond"></div>
+    <div class="page-shape page-square"></div>
+    <div class="page-shape page-triangle"></div>
+    <div class="page-shape page-streak-1"></div>
+    <div class="page-shape page-streak-2"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-mortarboard-fill me-2"></i>LEARNING SYSTEM
+            </a>
+            <div class="ms-auto">
+                <a href="login.html" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-shield-lock me-1"></i>Админ нэвтрэх
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3">Мэдлэгийг онлайнаар эзэмш</h1>
+            <p class="lead opacity-75 mb-4">Орчин үеийн технологийн мэдлэгийг эндээс суралцаарай.</p>
+            <!-- Search bar -->
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group shadow-sm">
+                        <span class="input-group-text bg-white border-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" id="userSearchInput" class="form-control border-0 py-2"
+                               placeholder="Хичээл хайх..." oninput="filterUserCourses()">
+                        <button class="btn btn-light border-0 px-3" onclick="clearSearch()">
+                            <i class="bi bi-x-lg text-muted"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="bg-white border-bottom shadow-sm py-3">
+        <div class="container">
+            <div class="row text-center g-3">
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-collection-fill text-primary fs-5"></i>
+                        <span class="fw-bold" id="user-stat-total">—</span>
+                        <span class="text-muted small">хичээл</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-cash-coin text-success fs-5"></i>
+                        <span class="fw-bold" id="user-stat-min">—</span>
+                        <span class="text-muted small">-с эхэлсэн</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-people-fill text-warning fs-5"></i>
+                        <span class="fw-bold text-warning">Онлайн</span>
+                        <span class="text-muted small">сургалт</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter & Sort -->
+    <div class="container mt-4 mb-2">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-collection me-2 text-primary"></i>
+                Бүх хичээлүүд
+                <span class="badge bg-primary bg-opacity-10 text-primary ms-1 small" id="course-count-badge"></span>
+            </h5>
+            <div class="d-flex gap-2 align-items-center">
+                <label class="text-muted small me-1">Эрэмбэлэх:</label>
+                <select id="sortSelect" class="form-select form-select-sm" style="width:auto" onchange="filterUserCourses()">
+                    <option value="default">Сүүлийн</option>
+                    <option value="price-asc">Үнэ: бага→их</option>
+                    <option value="price-desc">Үнэ: их→бага</option>
+                    <option value="name-asc">Нэр: А→Я</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses -->
+    <div class="container my-3">
+        <div id="course-display" class="row g-4">
+            <div class="col-12 text-center py-5 text-muted">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Мэдээллийг ачаалж байна...</p>
+            </div>
+        </div>
+        <!-- No results message -->
+        <div id="no-results" class="text-center py-5 d-none">
+            <i class="bi bi-search fs-1 text-muted"></i>
+            <p class="mt-3 text-muted">«<span id="search-keyword"></span>» хайлтад тохирох хичээл олдсонгүй.</p>
+            <button class="btn btn-outline-primary btn-sm" onclick="clearSearch()">Бүгдийг харах</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white-50 text-center py-3 mt-5 small">
+        &copy; 2025 Learning System — Flask + MySQL + Docker
+    </footer>
+
+    <!-- Course Detail Modal -->
+    <div class="modal fade" id="courseDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold px-3 py-2 rounded-pill">
+                        <i class="bi bi-book me-1"></i>Хичээлийн дэлгэрэнгүй
+                    </span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-2">
+                    <h3 class="fw-bold mb-2" id="detail-title"></h3>
+                    <p class="text-muted" id="detail-description"></p>
+                    <hr>
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <div class="bg-light rounded-3 p-3 text-center">
+                                <i class="bi bi-cash-coin text-success fs-3"></i>
+                                <div class="fw-bold fs-5 mt-1" id="detail-price"></div>
+                                <div class="text-muted small">Үнэ</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="bg-light rounded-3 p-3 text-center">
+                                <i class="bi bi-clock text-primary fs-3"></i>
+                                <div class="fw-bold mt-1">Онлайн</div>
+                                <div class="text-muted small">Хэлбэр</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="bg-light rounded-3 p-3 text-center">
+                                <i class="bi bi-award text-warning fs-3"></i>
+                                <div class="fw-bold mt-1">Гэрчилгээ</div>
+                                <div class="text-muted small">Олгоно</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 px-4">
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Хаах</button>
+                    <button class="btn btn-primary px-4" id="enrollBtn">
+                        <i class="bi bi-play-circle me-1"></i>Бүртгүүлэх
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrollment Success Modal -->
+    <div class="modal fade" id="enrollSuccessModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center py-5">
+                    <div class="mb-3">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size:4rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Амжилттай бүртгүүллээ!</h4>
+                    <p class="text-muted mb-1">Та <strong id="enrolled-course-name"></strong> хичээлд</p>
+                    <p class="text-muted">амжилттай бүртгүүллээ.</p>
+                    <button class="btn btn-success px-4 mt-2" data-bs-dismiss="modal">
+                        <i class="bi bi-check me-1"></i>Сайн байна
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

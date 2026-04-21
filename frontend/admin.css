@@ -1,0 +1,194 @@
+/* ── Admin page styles ── */
+
+/* Admin-specific body: slightly cooler tint */
+body {
+    background:
+        linear-gradient(155deg,
+            #e8f1fb 0%,
+            #f2f7fd 45%,
+            #eaf3fc 100%
+        ) !important;
+}
+
+/* ── Content above background ── */
+nav, .container-fluid, .modal, .toast-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Navbar ── */
+.navbar {
+    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%) !important;
+    box-shadow: 0 2px 12px rgba(7,67,125,.25) !important;
+}
+
+.navbar-icon-box {
+    background: rgba(255,255,255,.15);
+    border-radius: var(--radius-sm);
+    padding: 6px 9px;
+    border: 1px solid rgba(255,255,255,.2);
+}
+
+/* ── Stat cards ── */
+.stat-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border) !important;
+    transition: transform .15s, box-shadow .15s;
+}
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md) !important;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+/* stat icon color variants */
+.stat-icon-blue   { background: var(--brand-light);      color: var(--brand); }
+.stat-icon-teal   { background: rgba(10,124,92,.1);      color: var(--success); }
+.stat-icon-amber  { background: rgba(180,100,10,.1);     color: #b4640a; }
+.stat-icon-indigo { background: rgba(63,81,181,.1);      color: #3f51b5; }
+
+.stat-label {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+}
+
+/* ── Form & Table cards ── */
+.form-card,
+.table-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border) !important;
+}
+
+.card-header {
+    background: var(--card-bg) !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+.card-footer {
+    background: var(--card-bg) !important;
+    border-top: 1px solid var(--border) !important;
+}
+
+/* ── Form controls ── */
+.form-control,
+.form-select {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: .9rem;
+    background: #fafcff;
+    color: var(--text);
+    transition: border-color .15s, box-shadow .15s;
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px var(--brand-light);
+    background: #fff;
+}
+.form-control::placeholder { color: #a0b4c8; }
+
+.form-label {
+    font-size: .83rem;
+    font-weight: 600;
+    color: #2c4a63;
+}
+
+.input-group-text {
+    background: #f0f5fb;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-weight: 600;
+}
+
+#formTitle { font-size: 1rem; }
+
+/* ── Save button ── */
+.btn-primary {
+    background: var(--brand) !important;
+    border-color: var(--brand) !important;
+    font-weight: 600;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: 0 3px 10px rgba(7,67,125,.25);
+    transition: background .15s, box-shadow .15s, transform .1s;
+}
+.btn-primary:hover {
+    background: var(--brand-dark) !important;
+    border-color: var(--brand-dark) !important;
+    box-shadow: 0 6px 18px rgba(7,67,125,.35) !important;
+    transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* ── Table ── */
+.table thead th {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border) !important;
+    background: #f7fafd !important;
+}
+.table tbody tr {
+    transition: background .1s;
+}
+.table tbody tr:hover { background: #f4f8fd !important; }
+.table td { border-color: var(--border) !important; }
+
+/* ── Price badge ── */
+.price-badge {
+    background: rgba(10,124,92,.1);
+    color: var(--success);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    padding: 3px 10px;
+    font-size: .88rem;
+}
+
+/* ── Search ── */
+.search-clear {
+    cursor: pointer;
+    color: #b0c4d4;
+    transition: color .15s;
+}
+.search-clear:hover { color: var(--brand); }
+
+/* ── Action buttons ── */
+.action-btn {
+    border-radius: var(--radius-sm) !important;
+    font-size: .79rem;
+    padding: 4px 10px;
+    font-weight: 500;
+}
+.btn-outline-primary {
+    color: var(--brand) !important;
+    border-color: var(--brand) !important;
+}
+.btn-outline-primary:hover {
+    background: var(--brand) !important;
+    color: #fff !important;
+}
+
+/* ── Delete modal icon box ── */
+.delete-icon-box {
+    background: rgba(192,57,43,.1);
+    border-radius: 10px;
+    padding: 8px 10px;
+}
+
+/* ── Toast ── */
+.toast {
+    border-radius: var(--radius-sm) !important;
+    box-shadow: var(--shadow-md) !important;
+}
