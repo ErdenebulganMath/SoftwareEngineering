@@ -34,7 +34,7 @@
                 <span>LEARNING SYSTEM <span class="text-white-50 fw-normal">/ Админ</span></span>
             </a>
             <div class="ms-auto d-flex align-items-center gap-3">
-                <div class="d-flex align-items-center gap-2 text-white-50 small">
+                <div class="d-none d-md-flex align-items-center gap-2 text-white-50 small">
                     <i class="bi bi-person-circle fs-5 text-white"></i>
                     <span>Нэвтэрсэн: <strong class="text-white">admin</strong></span>
                 </div>
@@ -174,7 +174,7 @@
                                         <th style="min-width:160px;">Гарчиг</th>
                                         <th style="min-width:180px;">Тайлбар</th>
                                         <th style="width:120px;">Үнэ</th>
-                                        <th class="text-end pe-4" style="width:160px;">Үйлдэл</th>
+                                        <th class="text-end pe-4" style="width:180px;">Үйлдэл</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-course-list">
@@ -195,6 +195,131 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- Course Info Modal -->
+    <div class="modal fade" id="courseInfoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 py-3">
+                    <div class="flex-grow-1 me-3 min-w-0">
+                        <span class="badge rounded-pill px-2 py-1 mb-1"
+                              style="background:var(--brand-light);color:var(--brand);font-size:.73rem;">
+                            <i class="bi bi-book me-1"></i>Хичээлийн дэлгэрэнгүй
+                        </span>
+                        <h5 class="modal-title fw-bold mb-0 mt-1" id="infoTitle"
+                            style="font-size:1.05rem; word-break:break-word;"></h5>
+                    </div>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 py-3">
+                    <p class="text-muted mb-4" id="infoDesc" style="font-size:.9rem; line-height:1.6;"></p>
+                    <div class="row g-2 mb-4">
+                        <div class="col-6 col-sm-4">
+                            <div class="bg-light rounded-3 p-3 text-center">
+                                <i class="bi bi-cash-coin text-success fs-4"></i>
+                                <div class="fw-bold mt-1 text-success" id="infoPrice"></div>
+                                <div class="text-muted" style="font-size:.73rem;">Үнэ</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="bg-light rounded-3 p-3 text-center">
+                                <i class="bi bi-calendar-check text-primary fs-4"></i>
+                                <div class="fw-bold mt-1 small" id="infoDate"></div>
+                                <div class="text-muted" style="font-size:.73rem;">Огноо</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="bg-light rounded-3 p-3 text-center">
+                                <i class="bi bi-collection-play text-warning fs-4"></i>
+                                <div class="fw-bold mt-1" id="infoCount">—</div>
+                                <div class="text-muted" style="font-size:.73rem;">Материал</div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-3">
+                    <h6 class="fw-bold mb-3">
+                        <i class="bi bi-collection-play me-2 text-primary"></i>Хичээлийн материалууд
+                    </h6>
+                    <div id="infoLessons"></div>
+                </div>
+                <div class="modal-footer border-0 px-4 gap-2 flex-wrap">
+                    <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-1"></i>Хаах
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm" id="infoEditBtn">
+                        <i class="bi bi-pencil me-1"></i>Засах
+                    </button>
+                    <button class="btn btn-success btn-sm" id="infoMaterialBtn">
+                        <i class="bi bi-cloud-upload me-1"></i>Материал оруулах
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Materials Upload Modal -->
+    <div class="modal fade" id="materialModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-collection-play-fill text-primary fs-5"></i>
+                        <h5 class="modal-title fw-bold mb-0">
+                            Материал — <span id="materialCourseTitle" class="text-primary"></span>
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" id="materialCourseId">
+
+                    <!-- Upload form -->
+                    <div class="card border bg-light mb-4">
+                        <div class="card-body p-3">
+                            <h6 class="fw-semibold mb-3">
+                                <i class="bi bi-cloud-upload me-2 text-primary"></i>Шинэ файл оруулах
+                            </h6>
+                            <div class="mb-2">
+                                <label class="form-label small fw-semibold">
+                                    Гарчиг <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" id="lessonTitle" class="form-control form-control-sm"
+                                       placeholder="Жишээ: 1-р хичээл — Python танилцуулга">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">
+                                    Файл <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" id="lessonFile" class="form-control form-control-sm"
+                                       accept=".mp4,.webm,.avi,.mov,.mkv,.pdf,.docx,.doc,.pptx,.ppt,.xlsx,.xls,.txt,.zip,.rar">
+                                <div class="form-text">
+                                    Дэмжигдсэн: MP4, WebM, PDF, DOCX, PPTX, XLSX, TXT, ZIP, RAR (макс 500MB)
+                                </div>
+                            </div>
+                            <div id="uploadProgress" class="progress mb-3 d-none" style="height:22px;">
+                                <div id="uploadProgressBar"
+                                     class="progress-bar progress-bar-striped progress-bar-animated fw-semibold"
+                                     style="width:0%;font-size:.8rem;">0%</div>
+                            </div>
+                            <button class="btn btn-primary btn-sm px-3" onclick="uploadLesson()">
+                                <i class="bi bi-upload me-1"></i>Оруулах
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Existing lessons -->
+                    <h6 class="fw-semibold mb-2">
+                        <i class="bi bi-list-ul me-2 text-secondary"></i>Байгаа материалууд
+                    </h6>
+                    <div id="lessonsList">
+                        <div class="text-center text-muted py-3">
+                            <div class="spinner-border spinner-border-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

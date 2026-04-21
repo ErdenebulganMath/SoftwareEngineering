@@ -17,6 +17,19 @@ CREATE TABLE IF NOT EXISTS courses (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS lessons (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    course_id     INT NOT NULL,
+    title         VARCHAR(255) NOT NULL,
+    file_path     VARCHAR(512) NOT NULL,
+    file_type     VARCHAR(50)  NOT NULL,
+    original_name VARCHAR(255) NOT NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 INSERT INTO courses (title, description, price) VALUES
 ('Python програмчлалын үндэс',
  'Python хэлний суурь ойлголтоос эхлэн хувьсагч, нөхцөл, давталт, функц, OOP зарчим хүртэл системтэйгээр судална. Бодлого бодох, алгоритм боловсруулах дадлага хийнэ.',

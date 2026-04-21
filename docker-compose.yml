@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Flask Backend - ийн холболт 
+  # Flask Backend - ийн холболт
   backend:
     build: ./backend
     container_name: learning_backend
@@ -36,8 +36,11 @@ services:
       DB_NAME: learning_db
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: admin123
+      UPLOAD_FOLDER: /app/uploads
     ports:
       - "5000:5000"
+    volumes:
+      - uploads_data:/app/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -54,3 +57,4 @@ services:
 
 volumes:
   mysql_data:
+  uploads_data:

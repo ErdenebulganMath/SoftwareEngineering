@@ -1,12 +1,22 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 import mysql.connector
 import os
+import uuid
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app)
 app.json.ensure_ascii = False       # Кирилл үсгийг JSON-д зөв дамжуулах
 app.json.sort_keys = False
+
+UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "/app/uploads")
+ALLOWED_EXTENSIONS = {'mp4', 'webm', 'avi', 'mov', 'mkv',
+                      'pdf', 'docx', 'doc', 'pptx', 'ppt',
+                      'xlsx', 'xls', 'txt', 'zip', 'rar'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500 MB
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.after_request
 def set_charset(response):
@@ -26,6 +36,10 @@ def serve_file(filename):
         return send_file(f'../frontend/{filename}')
     return app.send_static_file(filename)
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 # Өгөгдлийн сантай холбогдох функц тодорхойлно.
 
 def get_db():
@@ -39,6 +53,31 @@ def get_db():
         use_unicode=True,
         init_command='SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci'
     )
+
+
+def init_db():
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS lessons (
+                id            INT AUTO_INCREMENT PRIMARY KEY,
+                course_id     INT NOT NULL,
+                title         VARCHAR(255) NOT NULL,
+                file_path     VARCHAR(512) NOT NULL,
+                file_type     VARCHAR(50)  NOT NULL,
+                original_name VARCHAR(255) NOT NULL,
+                created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        """)
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"DB init warning: {e}")
+
+init_db()
 
 
 # Authorization — энгийн хэрэглэгч ба админ хоёрын нэвтрэлтийг шалгах функц
@@ -174,6 +213,104 @@ def delete_course(course_id):
         return jsonify({"message": "Course deleted"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+# Хичээлийн материал (lessons) CRUD
+
+@app.route('/api/courses/<int:course_id>/lessons', methods=['GET'])
+def get_lessons(course_id):
+    try:
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(
+            "SELECT * FROM lessons WHERE course_id = %s ORDER BY created_at ASC",
+            (course_id,)
+        )
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return jsonify(rows), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/courses/<int:course_id>/lessons', methods=['POST'])
+def upload_lesson(course_id):
+    if 'file' not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files['file']
+    title = request.form.get('title', '').strip()
+
+    if not title:
+        return jsonify({"error": "Title is required"}), 400
+    if file.filename == '':
+        return jsonify({"error": "No file selected"}), 400
+    if not allowed_file(file.filename):
+        return jsonify({"error": "File type not allowed"}), 400
+
+    original_name = file.filename
+    ext = original_name.rsplit('.', 1)[1].lower()
+    unique_filename = f"{uuid.uuid4().hex}.{ext}"
+
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+
+    if ext in {'mp4', 'webm', 'avi', 'mov', 'mkv'}:
+        file_type = 'video'
+    elif ext == 'pdf':
+        file_type = 'pdf'
+    else:
+        file_type = 'file'
+
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO lessons (course_id, title, file_path, file_type, original_name) VALUES (%s, %s, %s, %s, %s)",
+            (course_id, title, unique_filename, file_type, original_name)
+        )
+        conn.commit()
+        new_id = cursor.lastrowid
+        cursor.close()
+        conn.close()
+        return jsonify({"id": new_id, "message": "Lesson uploaded"}), 201
+    except Exception as e:
+        try:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+        except OSError:
+            pass
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/lessons/<int:lesson_id>', methods=['DELETE'])
+def delete_lesson(lesson_id):
+    try:
+        conn = get_db()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM lessons WHERE id = %s", (lesson_id,))
+        row = cursor.fetchone()
+        if not row:
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "Lesson not found"}), 404
+
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], row['file_path'])
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        cursor.execute("DELETE FROM lessons WHERE id = %s", (lesson_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "Lesson deleted"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/uploads/<path:filename>', methods=['GET'])
+def serve_upload(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 # Серверийн ажиллагааг шалгах API

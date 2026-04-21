@@ -11,7 +11,7 @@ body {
 }
 
 /* ── Content above background ── */
-nav, .container-fluid, .modal, .toast-container {
+nav, .container-fluid, .toast-container {
     position: relative;
     z-index: 1;
 }
@@ -191,4 +191,76 @@ nav, .container-fluid, .modal, .toast-container {
 .toast {
     border-radius: var(--radius-sm) !important;
     box-shadow: var(--shadow-md) !important;
+}
+
+/* ── Clickable course title ── */
+.course-name-link {
+    cursor: pointer;
+    color: var(--brand);
+    transition: color .15s, text-decoration .15s;
+}
+.course-name-link:hover {
+    color: var(--brand-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ── Modal scrollable improvements ── */
+.modal-dialog-scrollable .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar { width: 5px; }
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar-track { background: transparent; }
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ══════════════════════════
+   RESPONSIVE
+   ══════════════════════════ */
+
+/* Tablet */
+@media (max-width: 991px) {
+    .container-fluid.px-4 {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    /* Navbar */
+    .navbar .btn { font-size: .78rem; padding: .25rem .55rem; }
+    .navbar-icon-box { padding: 5px 7px; }
+    .navbar-brand { font-size: .95rem; }
+
+    /* Reduce page padding */
+    .container-fluid.py-4 { padding-top: .75rem !important; padding-bottom: .75rem !important; }
+
+    /* Stat cards */
+    .stat-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+    .stat-label { font-size: .62rem; }
+    #stat-total { font-size: 1.1rem !important; }
+    #stat-avg, #stat-max, #stat-min { font-size: .95rem !important; }
+
+    /* Form & table cards */
+    .form-card .card-body { padding: 1rem !important; }
+    .table-card .card-header { flex-direction: column; align-items: flex-start !important; gap: .5rem; }
+    .table-card .card-header .input-group { max-width: 100% !important; width: 100% !important; }
+
+    /* Table action buttons */
+    .action-btn { padding: 3px 7px !important; font-size: .73rem; }
+
+    /* Modal */
+    .modal-dialog { margin: 8px; }
+    .modal-body.px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+    .modal-footer.px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+    .modal-footer { flex-wrap: wrap; }
+    .modal-footer .btn { flex: 1 1 auto; }
+}
+
+/* Small mobile */
+@media (max-width: 400px) {
+    .navbar-brand span { font-size: .82rem; }
+    .stat-card .card-body { padding: .6rem !important; gap: .5rem !important; }
+    .g-3 { --bs-gutter-x: .5rem; --bs-gutter-y: .5rem; }
 }

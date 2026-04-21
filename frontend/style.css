@@ -216,7 +216,7 @@ body::before {
 /* ── All content above background ── */
 nav, .hero-section, .container,
 .container-fluid, footer,
-.modal, .toast-container {
+.toast-container {
     position: relative;
     z-index: 1;
 }
@@ -442,4 +442,43 @@ footer {
 #enrollSuccessModal .btn-success {
     background-color: var(--brand) !important;
     border-color: var(--brand) !important;
+}
+
+/* ── Lesson list in detail modal ── */
+#detail-lessons .border-bottom:last-child { border-bottom: none !important; }
+
+/* ══════════════════════════
+   RESPONSIVE — User side
+   ══════════════════════════ */
+
+@media (max-width: 767px) {
+    /* Hero */
+    .hero-section { padding: 40px 0 32px; border-radius: 0 0 24px 24px; }
+    .hero-section h1 { font-size: 1.5rem; }
+    .hero-section .lead { font-size: .95rem; }
+
+    /* Navbar */
+    .navbar .btn-outline-light { font-size: .78rem; padding: .25rem .55rem; }
+
+    /* Course cards */
+    .course-btn { padding: 4px 10px; font-size: .72rem; }
+    .price-tag { font-size: .9rem; padding: 3px 9px; }
+
+    /* Course detail modal */
+    .modal-dialog { margin: 8px; }
+    #courseDetailModal .modal-body { padding: 1rem !important; }
+    #courseDetailModal .modal-footer { padding: .75rem 1rem !important; }
+    #courseDetailModal .row.g-3 { --bs-gutter-x: .5rem; --bs-gutter-y: .5rem; }
+}
+
+@media (max-width: 576px) {
+    /* Stats bar */
+    .bg-white.border-bottom .col-4 .fw-bold { font-size: .9rem; }
+    .bg-white.border-bottom .col-4 .small { font-size: .7rem; }
+
+    /* Sort select */
+    #sortSelect { font-size: .8rem; }
+
+    /* Cards grid: 1 column */
+    #course-display .col-md-4 { width: 100%; }
 }

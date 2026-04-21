@@ -1,4 +1,10 @@
-document.addEventListener('DOMContentLoaded', loadAdminCourses);
+document.addEventListener('DOMContentLoaded', function () {
+    if (localStorage.getItem('userRole') !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
+    loadAdminCourses();
+});
 
 function clearAdminSearch() {
     const input = document.getElementById('searchInput');
