@@ -14,7 +14,7 @@ ALLOWED_EXTENSIONS = {'mp4', 'webm', 'avi', 'mov', 'mkv',
                       'pdf', 'docx', 'doc', 'pptx', 'ppt',
                       'xlsx', 'xls', 'txt', 'zip', 'rar'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500 MB
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -104,7 +104,6 @@ def login():
         return jsonify({"message": "Login successful", "role": "user"}), 200
     return jsonify({"error": "Invalid credentials"}), 401
 
-# Create , Read , Update , Delete (CRUD) үйлдлүүдийг гүйцэтгэх API 
 
 @app.route('/api/courses', methods=['GET'])
 def get_courses():
@@ -215,7 +214,7 @@ def delete_course(course_id):
         return jsonify({"error": str(e)}), 500
 
 
-# Хичээлийн материал (lessons) CRUD
+# Хичээлийн материалийн CRUD
 
 @app.route('/api/courses/<int:course_id>/lessons', methods=['GET'])
 def get_lessons(course_id):
@@ -237,7 +236,7 @@ def get_lessons(course_id):
 @app.route('/api/courses/<int:course_id>/lessons', methods=['POST'])
 def upload_lesson(course_id):
     if 'file' not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+        return jsonify({"error": "No file exists"}), 400
 
     file = request.files['file']
     title = request.form.get('title', '').strip()
@@ -247,7 +246,7 @@ def upload_lesson(course_id):
     if file.filename == '':
         return jsonify({"error": "No file selected"}), 400
     if not allowed_file(file.filename):
-        return jsonify({"error": "File type not allowed"}), 400
+        return jsonify({"error": "File type not match"}), 400
 
     original_name = file.filename
     ext = original_name.rsplit('.', 1)[1].lower()

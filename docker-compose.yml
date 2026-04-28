@@ -1,6 +1,6 @@
 services:
 
-  # Өгөгдлийн сан
+
   db:
     image: mysql:8.0
     container_name: learning_db
@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Flask Backend - ийн холболт
+
   backend:
     build: ./backend
     container_name: learning_backend
@@ -45,7 +45,7 @@ services:
       db:
         condition: service_healthy
 
-  # Frontend
+
   frontend:
     image: nginx:alpine
     container_name: learning_frontend
