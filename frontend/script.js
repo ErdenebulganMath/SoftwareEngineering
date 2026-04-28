@@ -12,8 +12,7 @@ async function loadUserCourses() {
         const res = await fetch(`${API_URL}/courses`);
         if (!res.ok) throw new Error('Server error');
         userCourses = await res.json();
-        updateUserStats(userCourses);
-        renderUserCourses(userCourses);
+renderUserCourses(userCourses);
     } catch (err) {
         display.innerHTML = `
             <div class="col-12 text-center py-5 text-danger">
@@ -23,15 +22,6 @@ async function loadUserCourses() {
     }
 }
 
-function updateUserStats(courses) {
-    const totalEl = document.getElementById('user-stat-total');
-    const minEl = document.getElementById('user-stat-min');
-    if (totalEl) totalEl.textContent = courses.length;
-    if (minEl && courses.length > 0) {
-        const min = Math.min(...courses.map(c => parseFloat(c.price)));
-        minEl.textContent = formatPrice(min);
-    }
-}
 
 function renderUserCourses(courses) {
     const display = document.getElementById('course-display');
@@ -65,16 +55,10 @@ function renderUserCourses(courses) {
                     <p class="text-muted small flex-grow-1">${escapeHtml(c.description)}</p>
                     <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
                         <span class="price-tag">${formatPrice(c.price)}</span>
-                        <div class="d-flex gap-2">
-                            <button class="course-btn course-btn-outline"
-                                    onclick='openCourseDetail(${JSON.stringify(c)})'>
-                                <i class="bi bi-info-circle"></i>Дэлгэрэнгүй
-                            </button>
-                            <button class="course-btn course-btn-primary"
-                                    onclick='enrollCourse(${JSON.stringify(c)})'>
-                                <i class="bi bi-play-fill"></i>Суралцах
-                            </button>
-                        </div>
+                        <button class="course-btn course-btn-outline"
+                                onclick='openCourseDetail(${JSON.stringify(c)})'>
+                            <i class="bi bi-info-circle"></i>Дэлгэрэнгүй
+                        </button>
                     </div>
                 </div>
             </div>
@@ -112,11 +96,6 @@ function openCourseDetail(course) {
     document.getElementById('detail-title').textContent = course.title;
     document.getElementById('detail-description').textContent = course.description;
     document.getElementById('detail-price').textContent = formatPrice(course.price);
-    document.getElementById('enrollBtn').onclick = () => {
-        const detailModal = bootstrap.Modal.getInstance(document.getElementById('courseDetailModal'));
-        if (detailModal) detailModal.hide();
-        enrollCourse(course);
-    };
     loadUserLessons(course.id);
     const modal = new bootstrap.Modal(document.getElementById('courseDetailModal'));
     modal.show();
@@ -172,7 +151,6 @@ async function loadAdminCourses() {
         if (!res.ok) throw new Error('Server error');
         allCourses = await res.json();
         renderAdminTable(allCourses);
-        updateStats(allCourses);
     } catch (err) {
         tbody.innerHTML = `
             <tr><td colspan="5" class="text-center py-4 text-danger">

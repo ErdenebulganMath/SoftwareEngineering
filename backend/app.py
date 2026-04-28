@@ -6,7 +6,7 @@ import uuid
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app)
-app.json.ensure_ascii = False       # Кирилл үсгийг JSON-д зөв дамжуулах
+app.json.ensure_ascii = False  
 app.json.sort_keys = False
 
 UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "/app/uploads")
@@ -14,7 +14,6 @@ ALLOWED_EXTENSIONS = {'mp4', 'webm', 'avi', 'mov', 'mkv',
                       'pdf', 'docx', 'doc', 'pptx', 'ppt',
                       'xlsx', 'xls', 'txt', 'zip', 'rar'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -24,7 +23,6 @@ def set_charset(response):
         response.content_type += '; charset=utf-8'
     return response
 
-# HTML файлууд
 
 @app.route('/')
 def index():
@@ -40,7 +38,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# Өгөгдлийн сантай холбогдох функц тодорхойлно.
+
 
 def get_db():
     return mysql.connector.connect(
@@ -78,9 +76,6 @@ def init_db():
         print(f"DB init warning: {e}")
 
 init_db()
-
-
-# Authorization — энгийн хэрэглэгч ба админ хоёрын нэвтрэлтийг шалгах функц
 
 
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
@@ -214,7 +209,6 @@ def delete_course(course_id):
         return jsonify({"error": str(e)}), 500
 
 
-# Хичээлийн материалийн CRUD
 
 @app.route('/api/courses/<int:course_id>/lessons', methods=['GET'])
 def get_lessons(course_id):
