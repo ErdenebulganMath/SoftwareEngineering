@@ -111,7 +111,7 @@ def get_courses():
         conn.close()
         return jsonify(rows), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}),
 
 
 @app.route('/api/courses/<int:course_id>', methods=['GET'])
