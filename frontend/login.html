@@ -18,8 +18,26 @@
                 </a>
             </div>
 
-            <h3>Админ нэвтрэх</h3>
-            <p class="subtitle">Нэвтрэх нэр болон нууц үгээ оруулна уу.</p>
+            <h3>Системд нэвтрэх</h3>
+            <p class="subtitle">Эрхийн төрлөө сонгоод нэвтэрнэ үү.</p>
+
+            <!-- Role selector -->
+            <div class="role-selector" role="group">
+                <button type="button" class="role-btn active-admin" id="btnAdmin" onclick="selectRole('admin')">
+                    <div class="role-icon"><i class="bi bi-shield-lock-fill"></i></div>
+                    <div class="role-label">
+                        Админ
+                        <small>Удирдлагын эрх</small>
+                    </div>
+                </button>
+                <button type="button" class="role-btn" id="btnUser" onclick="selectRole('user')">
+                    <div class="role-icon"><i class="bi bi-person-fill"></i></div>
+                    <div class="role-label">
+                        Хэрэглэгч
+                        <small>Үзэх эрх</small>
+                    </div>
+                </button>
+            </div>
 
             <div class="error-alert" id="loginError">
                 <i class="bi bi-exclamation-circle-fill"></i>
@@ -32,7 +50,6 @@
                     <div class="field-wrap">
                         <span class="field-icon"><i class="bi bi-person"></i></span>
                         <input type="text" id="username" name="username"
-                               placeholder="admin"
                                autocomplete="username" required>
                     </div>
                 </div>
@@ -42,7 +59,6 @@
                     <div class="field-wrap">
                         <span class="field-icon"><i class="bi bi-lock"></i></span>
                         <input type="password" id="password" name="password"
-                               placeholder="••••••••"
                                autocomplete="current-password" required>
                         <button type="button" class="btn-toggle-pw" onclick="togglePassword()">
                             <i class="bi bi-eye" id="pwToggleIcon"></i>
